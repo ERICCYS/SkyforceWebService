@@ -100,6 +100,11 @@ public class ShopController {
             oldShop.setCertificate(shop.getCertificate());
             oldShop.setContactEmail(shop.getContactEmail());
             oldShop.setContactNumber(shop.getContactNumber());
+            oldShop.setLocation(shop.getLocation());
+            oldShop.setVerified(shop.isVerified());
+            oldShop.setCategory(shop.getCategory());
+            oldShop.setCarParkNumbers(shop.getCarParkNumbers());
+            oldShop.setProducts(shop.getProducts());
             Shop updatedShop = shopService.save(shop);
             return JSONConvert.JSONConverter(updatedShop);
         }
