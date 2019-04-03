@@ -2,6 +2,7 @@ package com.skyforce.SkyForceWebService.controller;
 
 
 import com.skyforce.SkyForceWebService.config.JSONConvert;
+import com.skyforce.SkyForceWebService.model.Product;
 import com.skyforce.SkyForceWebService.model.Shop;
 import com.skyforce.SkyForceWebService.model.Vendor;
 import com.skyforce.SkyForceWebService.service.ProductService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -104,7 +106,6 @@ public class ShopController {
             oldShop.setVerified(shop.isVerified());
             oldShop.setCategory(shop.getCategory());
             oldShop.setCarParkNumbers(shop.getCarParkNumbers());
-            oldShop.setProducts(shop.getProducts());
             Shop updatedShop = shopService.save(shop);
             return JSONConvert.JSONConverter(updatedShop);
         }
