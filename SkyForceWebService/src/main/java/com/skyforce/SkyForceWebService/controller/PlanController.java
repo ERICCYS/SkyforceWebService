@@ -16,9 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -57,12 +60,14 @@ public class PlanController {
         Plan plan = planService.findPlanById(planId);
         List<PlanItem> planItems = plan.getPlanItems();
         JSONArray formattedItems = new JSONArray();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("SGT"));
         for (PlanItem planItem : planItems) {
             JSONObject newPlanItem = new JSONObject();
             Shop shop = shopService.findShopById(planItem.getShopId());
             newPlanItem.put("shopName", shop.getName());
             newPlanItem.put("shopAddress", shop.getLocation());
-            newPlanItem.put("shopDateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(planItem.getScheduledVisitTime()));
+            newPlanItem.put("shopDateTime", formatter.format(planItem.getScheduledVisitTime()));
             formattedItems.add(newPlanItem);
         }
         return JSONConvert.JSONConverter(formattedItems);
@@ -75,13 +80,15 @@ public class PlanController {
         List<Plan> plans = planService.findAll();
         List<Plan> customerPlan = new ArrayList<>();
         JSONArray relatedPlan = new JSONArray();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("SGT"));
         for (Plan plan : plans) {
             if (plan.getCustomer().getId().equals(customerId)) {
                 customerPlan.add(plan);
                 JSONObject newPlan = new JSONObject();
                 newPlan.put("planId", plan.getId());
                 newPlan.put("planName", plan.getName());
-                newPlan.put("planDateTime", new SimpleDateFormat("yyyy-MM-dd").format(plan.getDate()));
+                newPlan.put("planDateTime", formatter.format(plan.getDate()));
                 relatedPlan.add(newPlan);
             }
         }

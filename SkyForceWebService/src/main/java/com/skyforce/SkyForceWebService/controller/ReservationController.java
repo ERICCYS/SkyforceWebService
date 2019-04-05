@@ -56,7 +56,6 @@ public class ReservationController {
                 JSONObject newReservation = new JSONObject();
                 newReservation.put("shopName", shop.getName());
                 newReservation.put("shopAddress", shop.getLocation());
-//                newReservation.put("arrivalTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reservation.getArrivalTime()));
                 newReservation.put("arrivalTime", formatter.format(reservation.getArrivalTime()));
                 relatedReservations.add(newReservation);
             }
