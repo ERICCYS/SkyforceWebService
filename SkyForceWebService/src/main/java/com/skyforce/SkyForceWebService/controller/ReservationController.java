@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.json.simple.JSONObject;
 
 import javax.validation.Valid;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @RestController
 public class ReservationController {
@@ -45,6 +47,8 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.findAll();
         List<Reservation> interested = new ArrayList<>();
         JSONArray relatedReservations = new JSONArray();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("SGT"));
         for (Reservation reservation : reservations) {
             if (reservation.getCustomerId().equals(customerId)) {
                 interested.add(reservation);
@@ -52,7 +56,8 @@ public class ReservationController {
                 JSONObject newReservation = new JSONObject();
                 newReservation.put("shopName", shop.getName());
                 newReservation.put("shopAddress", shop.getLocation());
-                newReservation.put("arrivalTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reservation.getArrivalTime()));
+//                newReservation.put("arrivalTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reservation.getArrivalTime()));
+                newReservation.put("arrivalTime", formatter.format(reservation.getArrivalTime()));
                 relatedReservations.add(newReservation);
             }
         }
